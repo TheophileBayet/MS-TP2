@@ -298,6 +298,8 @@ bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
       return (he1.m_vertex->m_id == he2.m_vertex->m_id);
     }
 
+
+
 vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 {
     std::vector<Vertex*> liste_voisin ;
@@ -310,6 +312,8 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
       liste_voisin.push_back(he0->m_vertex);
       he0 = he0->m_next;
     }
+
+    cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
     return liste_voisin;
 }
 
@@ -318,15 +322,22 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 {
     cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
     std::vector<Vertex*> liste_voisin =GetVertexNeighbors(v);
-
-    cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
     return vec3(0.0);
 }
 
 void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
 {
     cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
-    Laplacian(m_vertices[0]);
+    int nb_vertices = m_vertices.size();
+    for(int i = 0 ; i < nb_iter ; i++){
+      // pour tous les sommmets du maillage, aller dans la direction du Laplacien, pondéré par lambda.
+      for(int j = 0 ; j < nb_vertices; j++){
+        Vertex* new_point = m_vertices[j];
+        glm::vec3* new_coord = new_point->m_position;
+        *new_coord = *new_coord + lambda*Laplacian(m_vertices[j]);
+        m_vertices[j]=new_point;
+      }
+    }
 }
 
 void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb_iter)

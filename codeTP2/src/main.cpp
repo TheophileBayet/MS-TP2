@@ -114,7 +114,7 @@ int main()
 //    Mesh m("../models/armadillo.off");
 //    Mesh m("../models/buddha.off");
 //    Mesh m("../models/bunny.off");
-//    Mesh m("../models/ceasar.off");
+    Mesh m("../models/ceasar.off");
 //     Mesh m("../models/cube_closed.off");
 //    Mesh m("../models/cylindre.off");
 //    Mesh m("../models/dragon.off");
@@ -125,7 +125,7 @@ int main()
 //    Mesh m("../models/sphere.off");
 //    Mesh m("../models/sphere_piece.off");
 //    Mesh m("../models/test.off");
-    Mesh m("../models/tetrahedron.off");
+//  Mesh m("../models/tetrahedron.off");
 //    Mesh m("../models/tetrahedron_2.off");
 //    Mesh m("../models/thing_rounded.off");
 //    Mesh m("../models/thing_squared.off");
@@ -142,7 +142,7 @@ int main()
 
     /// TODO : test your neighborhood and laplacian computation here.
 
-    
+
 
 
 
