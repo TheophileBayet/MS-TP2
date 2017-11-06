@@ -73,8 +73,10 @@ class HalfEdge
 {
 public:
 
-    // Constructors
+    // Constructors & utils  glm::vec3* m_position;
     HalfEdge(): m_id(s_id++), m_next(NULL), m_twin(NULL) {}
+
+    bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 );         /// Assignement operator performing deep copy
 
 
     // I/O
@@ -156,4 +158,3 @@ public:
 };
 
 #endif // MESH_HE_H
-

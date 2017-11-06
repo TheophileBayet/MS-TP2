@@ -6,7 +6,7 @@
 #include <shader.h> // Help to load shaders from files
 
 // Include GLEW : Always include it before glfw.h et gl.h :)
-#include <GL/glew.h>    // OpenGL Extension Wrangler Library : http://glew.sourceforge.net/ 
+#include <GL/glew.h>    // OpenGL Extension Wrangler Library : http://glew.sourceforge.net/
 #include <GL/glfw.h>    // Window, keyboard, mouse : http://www.glfw.org/
 
 #include <glm/glm.hpp>  // OpenGL Mathematics : http://glm.g-truc.net/0.9.5/index.html
@@ -114,8 +114,8 @@ int main()
 //    Mesh m("../models/armadillo.off");
 //    Mesh m("../models/buddha.off");
 //    Mesh m("../models/bunny.off");
-    Mesh m("../models/ceasar.off");
-//    Mesh m("../models/cube_closed.off");
+//    Mesh m("../models/ceasar.off");
+//     Mesh m("../models/cube_closed.off");
 //    Mesh m("../models/cylindre.off");
 //    Mesh m("../models/dragon.off");
 //    Mesh m("../models/half_cylindre.off");
@@ -125,7 +125,7 @@ int main()
 //    Mesh m("../models/sphere.off");
 //    Mesh m("../models/sphere_piece.off");
 //    Mesh m("../models/test.off");
-//    Mesh m("../models/tetrahedron.off");
+    Mesh m("../models/tetrahedron.off");
 //    Mesh m("../models/tetrahedron_2.off");
 //    Mesh m("../models/thing_rounded.off");
 //    Mesh m("../models/thing_squared.off");
@@ -142,6 +142,7 @@ int main()
 
     /// TODO : test your neighborhood and laplacian computation here.
 
+    
 
 
 
@@ -168,12 +169,12 @@ int main()
 
     GLuint VmatrixID = glGetUniformLocation(programID, "ViewMatrix");
     cout << "VmatrixID = " << VmatrixID << endl;
-    
+
 
 
     cout << "Initializing done." << endl;
     cout << endl;
-    
+
 
 
     //==================================================
@@ -209,7 +210,10 @@ int main()
         {
             o.m_mesh->LaplacianSmooth(0.5, 1);
             o.UpdateGeometryBuffers();
+
         }
+
+
 
 
         //==================================================
@@ -330,5 +334,3 @@ void view_control(mat4& view_matrix, float dx)
         view_matrix = translate(view_matrix, vec3(axis));
     }
 }
-
-
