@@ -294,13 +294,23 @@ MeshHE::MeshHE(const MeshHE& m)
 
 //***************
 // Smoothing [TODO]
-
+bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
+      return (he1.m_vertex->m_id == he2.m_vertex->m_id);
+    }
 
 vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 {
-    cout << "MeshHE::GetVertexNeighbors(const Vertex* v) is not coded yet!" << endl;
-
-    return vector<Vertex*>();
+    std::vector<Vertex*> liste_voisin ;
+    HalfEdge* he0 = v->m_half_edge;
+    HalfEdge* he1 = he0-> m_twin;
+    liste_voisin.push_back(he1->m_vertex);
+    he0 = he1->m_next;
+    while(!(EstEgal(*(he0->m_twin),*he1))){
+      he0 = he0->m_twin;
+      liste_voisin.push_back(he0->m_vertex);
+      he0 = he0->m_next;
+    }
+    return liste_voisin;
 }
 
 
@@ -323,6 +333,7 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
 {
     cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
+    Laplacian(m_vertices[0]);
 }
 
 void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb_iter)
@@ -568,4 +579,3 @@ void HalfEdge::display() const
     else
         cout << "| twin: NULL" << endl;
 }
-
