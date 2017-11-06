@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <map>
-//#include <algorithm>
+#include <algorithm>
 
 using namespace glm;
 using namespace std;
@@ -306,9 +306,18 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 
 glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 {
-    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
+	vector<Vertex*> neighbors = GetVertexNeighbors(v);
+	vec3 laplace = vec3(0);
+	//for(Vertex* n : neighbors)
+	for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it)
+	{	
+		Vertex* n = *it;
+		laplace += n->m_position - v->m_position; 
+	}
+	laplace /= neighbors.size();	
+//    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
 
-    return vec3(0.0);
+    return laplace;
 }
 
 void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
