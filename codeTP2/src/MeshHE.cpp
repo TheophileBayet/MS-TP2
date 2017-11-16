@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include "glm/ext.hpp"
 
 using namespace glm;
 using namespace std;
@@ -330,7 +331,8 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 	}
 	laplace /= neighbors.size();
 //    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
-  // laplace = -(*(v->m_position));
+
+    // cout << "Thomas::Test :  laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
     return laplace;
 }
 
