@@ -338,7 +338,7 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 
 void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
 {
-    cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
+    // cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
     int nb_vertices = m_vertices.size();
     glm::vec3 lap_values[nb_vertices] ;
     for(int i = 0 ; i < nb_iter ; i++){
@@ -363,11 +363,7 @@ void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb
 //***************
 // Border detection [TODO]
 
-bool MeshHE::IsAtBorder(const Vertex* v) const
-{
-    cout << "MeshHE::IsAtBorder(const Vertex* v) is not coded yet!" << endl;
-    return false;
-}
+
 
 
 bool MeshHE::IsAtBorder(const HalfEdge* he) const
@@ -376,18 +372,35 @@ bool MeshHE::IsAtBorder(const HalfEdge* he) const
     return (he->m_twin==NULL);
 }
 
+bool MeshHE::IsAtBorder(const Vertex* v) const
+{
+    // cout << "MeshHE::IsAtBorder(const Vertex* v) is not coded yet!" << endl;
+    HalfEdge* he0 = v->m_half_edge;
+    if(IsAtBorder(he0))return true;
+    HalfEdge* he1 = he0-> m_twin;
+    he0 = he1->m_next;
+    while(!(EstEgal(*(he0->m_twin),*he1))){
+      if(IsAtBorder(he0))return true;
+      he0 = he0->m_twin;
+      he0 = he0->m_next;
+    }
+    return false;
+}
 
 bool MeshHE::IsAtBorder(const Face* f) const
 {
-    HalfEdge* current_he = f->m_half_edge;
-    // cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
-    for(int i = 0 ; i < 3 ; i++){
-      if (IsAtBorder(current_he)){
-        return true;
-      }
-      current_he = current_he->m_next;
-    }
-    return false;
+  //cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
+	HalfEdge* h = f->m_half_edge;
+	HalfEdge* hi = f->m_half_edge;
+	for(int i=0; i<3; i++){
+		if(IsAtBorder(h)){
+			return true;
+		}
+		h = h->m_next;
+	}
+	if(h != hi){
+		cout << "error of struc face read" << endl;
+	}  return false;
 }
 
 
@@ -496,7 +509,7 @@ void MeshHE::ComputeNormals()
             *m_vertices[i]->m_normal += faceNormal * alpha;
         }
 
-        *m_vertices[i]->m_normal = glm::normalize(*m_vertices[i]->m_normal);
+        *m_vertices[i]->m_normal = -glm::normalize(*m_vertices[i]->m_normal);
     }
 }
 
