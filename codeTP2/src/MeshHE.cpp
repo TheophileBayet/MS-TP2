@@ -379,7 +379,19 @@ bool MeshHE::IsAtBorder(const HalfEdge* he) const
 
 bool MeshHE::IsAtBorder(const Face* f) const
 {
-    cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
+    //cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
+	HalfEdge* h = f->m_half_edge;
+	HalfEdge* hi = f->m_half_edge;
+	for(int i=0; i<2; i++){
+		if(IsAtBorder(h)){
+			return true;
+		}
+		h = h->m_next;
+	}
+	if(h != hi){
+		cout << "error of struc face read" << endl;
+	}
+
     return false;
 }
 
