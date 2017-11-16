@@ -294,7 +294,7 @@ MeshHE::MeshHE(const MeshHE& m)
 }
 
 //***************
-// Smoothing [TODO]
+// Smoothing
 bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
       return (he1.m_vertex->m_id == he2.m_vertex->m_id);
     }
@@ -303,36 +303,46 @@ bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
 
 vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 {
+    // cout << " Entree dans la recherche voisin" << endl;
     std::vector<Vertex*> liste_voisin ;
-    HalfEdge* he0 = v->m_half_edge;
-    HalfEdge* he1 = he0-> m_twin;
-    liste_voisin.push_back(he1->m_vertex);
-    he0 = he1->m_next;
-    while(!(EstEgal(*(he0->m_twin),*he1))){
-      he0 = he0->m_twin;
-      liste_voisin.push_back(he0->m_vertex);
-      he0 = he0->m_next;
-    }
-
+    if(!IsAtBorder(v)){
+      // cout << " Entre non bord" << endl;
+      HalfEdge* he0 = v->m_half_edge;
+      HalfEdge* he1 = he0-> m_twin;
+      liste_voisin.push_back(he1->m_vertex);
+      he0 = he1->m_next;
+      while(!(EstEgal(*(he0->m_twin),*he1))){
+        he0 = he0->m_twin;
+        liste_voisin.push_back(he0->m_vertex);
+        he0 = he0->m_next;
+      }
+      // cout << "sortie non bord" << endl;
+  }else{
+    cout << " On tombe sur un bord " <<endl;
+  }
     cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
+    cout << endl;
     return liste_voisin;
 }
 
 
 glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 {
+    cout << "Entree Laplacien" << endl;
 	vector<Vertex*> neighbors = GetVertexNeighbors(v);
 	vec3 laplace = vec3(0);
 	//for(Vertex* n : neighbors)
-	for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it)
-	{
-		Vertex* n = *it;
-		laplace += *(n->m_position) - *(v->m_position);
-	}
-	laplace /= neighbors.size();
-//    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
+  cout << "MILIEU LAPLACIEN " << endl;
+  if(!IsAtBorder(v)){ // Si le sommet est au bord, pas de déplacement
+	   for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it){
+		  Vertex* n = *it;
+		  laplace += *(n->m_position) - *(v->m_position);
+	 }
+	 laplace /= neighbors.size();
+  }
+   cout << "MeshHE::Laplacian ended" << endl;
 
-    cout << "Thomas::Test : laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
+    // cout << "Thomas::Test : laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
     return laplace;
 }
 
@@ -348,7 +358,9 @@ void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
       }
       // Pour tous les sommets du maillage, aller dans la direction du laplacien
       for(int j = 0 ; j < nb_vertices; j++){
-        *(m_vertices[j]->m_position) = *(m_vertices[j]->m_position)+lambda*lap_values[j];
+        if(!IsAtBorder(m_vertices[j])){
+          *(m_vertices[j]->m_position) = *(m_vertices[j]->m_position)+lambda*lap_values[j];
+        }
       }
 
     }
@@ -366,7 +378,7 @@ void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb
 
 
 //***************
-// Border detection [TODO]
+// Border detection 
 
 
 
@@ -384,10 +396,12 @@ bool MeshHE::IsAtBorder(const Vertex* v) const
     if(IsAtBorder(he0))return true;
     HalfEdge* he1 = he0-> m_twin;
     he0 = he1->m_next;
+    if(IsAtBorder(he0))return true;
     while(!(EstEgal(*(he0->m_twin),*he1))){
       if(IsAtBorder(he0))return true;
       he0 = he0->m_twin;
       he0 = he0->m_next;
+      if(IsAtBorder(he0))return true;
     }
     return false;
 }
@@ -492,8 +506,9 @@ void MeshHE::ComputeNormals()
     for(unsigned int i=0; i<m_vertices.size(); i++)
     {
         *m_vertices[i]->m_normal = vec3(0.0);
-
+        cout << "BOUCLE COMPUTENORMALS" << endl;
         vector<Vertex*> neib = GetVertexNeighbors(m_vertices[i]);
+
 
         glm::uint j_max = neib.size();
         if(IsAtBorder(m_vertices[i]))
@@ -516,6 +531,7 @@ void MeshHE::ComputeNormals()
 
         *m_vertices[i]->m_normal = -glm::normalize(*m_vertices[i]->m_normal);
     }
+    cout << " FIN BOUCLE COMPUTENORMALS" << endl;
 }
 
 
