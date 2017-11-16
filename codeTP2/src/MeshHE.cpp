@@ -358,7 +358,7 @@ void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb
 {
 //    cout << "MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb_iter) is not coded yet!" << endl;
 
-	for(int i=nb_iter; i<0; i--){
+	for(int i=nb_iter; i>0; i--){
 			LaplacianSmooth(lambda,1);
 			LaplacianSmooth(mu,1);
 	}

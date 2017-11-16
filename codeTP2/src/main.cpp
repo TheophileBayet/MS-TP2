@@ -209,7 +209,7 @@ int main()
         if (glfwGetKey( GLFW_KEY_SPACE ) == GLFW_PRESS)
         {
             //o.m_mesh->LaplacianSmooth(0.5,1);
-            o.m_mesh->TaubinSmooth(0.5,-0.51,1);
+            o.m_mesh->TaubinSmooth(0.5,-0.2,1000);
             o.m_mesh->Normalize();
             o.m_mesh->ComputeNormals();
             o.UpdateGeometryBuffers();
