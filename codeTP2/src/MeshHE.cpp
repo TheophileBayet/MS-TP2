@@ -326,11 +326,11 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 	for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it)
 	{
 		Vertex* n = *it;
-		laplace += n->m_position - v->m_position;
+		laplace += *(n->m_position) - *(v->m_position);
 	}
 	laplace /= neighbors.size();
 //    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
-
+  // laplace = -(*(v->m_position));
     return laplace;
 }
 
