@@ -155,6 +155,11 @@ public:
     std::vector<glm::vec3> m_positions;             /// Container for the vertices positions
     std::vector<glm::vec3> m_normals;               /// Container for the vertices normals
 
+private:
+
+    std::vector<Vertex*> GetVertexNeighborsNotBorder(const Vertex* v) const;                                      /// Computes the 1-ring of vertex v
+    std::vector<Vertex*> GetVertexNeighborsAtBorder(const Vertex* v) const;                                      /// Computes the 1-ring of vertex v
+
 };
 
 #endif // MESH_HE_H

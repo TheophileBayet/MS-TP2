@@ -299,7 +299,50 @@ bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
       return (he1.m_vertex->m_id == he2.m_vertex->m_id);
     }
 
+vector<Vertex*> MeshHE::GetVertexNeighborsNotBorder(const Vertex* v) const
+{
+    std::vector<Vertex*> liste_voisin ;
+	// cout << " Entre non bord" << endl;
+	HalfEdge* he0 = v->m_half_edge;
+	HalfEdge* he1 = he0-> m_twin;
+	liste_voisin.push_back(he1->m_vertex);
+	he0 = he1->m_next;
+	while(!(EstEgal(*(he0->m_twin),*he1))){
+		he0 = he0->m_twin;
+		liste_voisin.push_back(he0->m_vertex);
+		he0 = he0->m_next;
+	}
+    return liste_voisin;
+}
 
+vector<Vertex*> MeshHE::GetVertexNeighborsAtBorder(const Vertex* v) const
+{
+    std::vector<Vertex*> liste_voisin ;
+	// cout << " Entre non bord" << endl;
+	HalfEdge* he0 = v->m_half_edge;
+	//while the border edge is not reached loop clockwize
+	if(!IsAtBorder(he0)){
+		liste_voisin.push_back(he0->m_twin->m_vertex);
+		he0 = he0->m_twin->m_next;
+		while((!IsAtBorder(he0))){
+			he0 = he0->m_twin;
+			liste_voisin.push_back(he0->m_vertex);
+			he0 = he0->m_next;
+		}
+	}
+	//while the border edge is not reached loop counter-clockwize
+	he0 = v->m_half_edge->m_next;
+	liste_voisin.push_back(he0->m_vertex);
+	he0 = he0->m_next;
+	liste_voisin.push_back(he0->m_vertex);
+	while(!IsAtBorder(he0)){
+		he0 = he0->m_twin;
+		he0 = he0->m_next;
+		he0 = he0->m_next;
+		liste_voisin.push_back(he0->m_vertex);
+	}
+    return liste_voisin;
+}
 
 vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 {
@@ -307,18 +350,10 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
     std::vector<Vertex*> liste_voisin ;
     if(!IsAtBorder(v)){
       // cout << " Entre non bord" << endl;
-      HalfEdge* he0 = v->m_half_edge;
-      HalfEdge* he1 = he0-> m_twin;
-      liste_voisin.push_back(he1->m_vertex);
-      he0 = he1->m_next;
-      while(!(EstEgal(*(he0->m_twin),*he1))){
-        he0 = he0->m_twin;
-        liste_voisin.push_back(he0->m_vertex);
-        he0 = he0->m_next;
-      }
-      // cout << "sortie non bord" << endl;
+		liste_voisin = GetVertexNeighborsNotBorder(v);
   }else{
     cout << " On tombe sur un bord " <<endl;
+		liste_voisin = GetVertexNeighborsAtBorder(v);
   }
     cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
     cout << endl;
