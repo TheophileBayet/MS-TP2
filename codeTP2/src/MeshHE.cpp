@@ -338,14 +338,17 @@ void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
 {
     cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
     int nb_vertices = m_vertices.size();
+    glm::vec3 lap_values[nb_vertices] ;
     for(int i = 0 ; i < nb_iter ; i++){
-      // pour tous les sommmets du maillage, aller dans la direction du Laplacien, pondéré par lambda.
+      // pour tous les sommmets du maillage, calculer le laplacien
       for(int j = 0 ; j < nb_vertices; j++){
-        Vertex* new_point = m_vertices[j];
-        glm::vec3* new_coord = new_point->m_position;
-        *new_coord = *new_coord + lambda*Laplacian(m_vertices[j]);
-        m_vertices[j]=new_point;
+        lap_values[j] = Laplacian(m_vertices[j]);
       }
+      // Pour tous les sommets du maillage, aller dans la direction du laplacien
+      for(int j = 0 ; j < nb_vertices; j++){
+        *(m_vertices[j]->m_position) = *(m_vertices[j]->m_position)+lambda*lap_values[j];
+      }
+
     }
 }
 
