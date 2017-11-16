@@ -332,7 +332,7 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 	laplace /= neighbors.size();
 //    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
 
-    // cout << "Thomas::Test :  laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
+    cout << "Thomas::Test : laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
     return laplace;
 }
 
@@ -372,14 +372,21 @@ bool MeshHE::IsAtBorder(const Vertex* v) const
 
 bool MeshHE::IsAtBorder(const HalfEdge* he) const
 {
-    cout << "MeshHE::IsAtBorder(const HalfEdge* he) is not coded yet!" << endl;
-    return false;
+    // cout << "MeshHE::IsAtBorder(const HalfEdge* he) is not coded yet!" << endl;
+    return (he->m_twin==NULL);
 }
 
 
 bool MeshHE::IsAtBorder(const Face* f) const
 {
-    cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
+    HalfEdge* current_he = f->m_half_edge;
+    // cout << "MeshHE::IsAtBorder(const Face* f) is not coded yet!" << endl;
+    for(int i = 0 ; i < 3 ; i++){
+      if (IsAtBorder(current_he)){
+        return true;
+      }
+      current_he = current_he->m_next;
+    }
     return false;
 }
 
