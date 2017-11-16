@@ -299,6 +299,8 @@ bool EstEgal(const HalfEdge& he1,const HalfEdge& he2 ){
       return (he1.m_vertex->m_id == he2.m_vertex->m_id);
     }
 
+
+
 vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 {
     std::vector<Vertex*> liste_voisin ;
@@ -311,6 +313,8 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
       liste_voisin.push_back(he0->m_vertex);
       he0 = he0->m_next;
     }
+
+    cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
     return liste_voisin;
 }
 
@@ -321,11 +325,11 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 	vec3 laplace = vec3(0);
 	//for(Vertex* n : neighbors)
 	for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it)
-	{	
+	{
 		Vertex* n = *it;
-		laplace += n->m_position - v->m_position; 
+		laplace += n->m_position - v->m_position;
 	}
-	laplace /= neighbors.size();	
+	laplace /= neighbors.size();
 //    cout << "MeshHE::Laplacian(const Vertex* v) is not coded yet!" << endl;
 
     cout << "Thomas::Test :  laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
@@ -335,7 +339,19 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
 {
     cout << "MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter) is not coded yet!" << endl;
-    Laplacian(m_vertices[0]);
+    int nb_vertices = m_vertices.size();
+    glm::vec3 lap_values[nb_vertices] ;
+    for(int i = 0 ; i < nb_iter ; i++){
+      // pour tous les sommmets du maillage, calculer le laplacien
+      for(int j = 0 ; j < nb_vertices; j++){
+        lap_values[j] = Laplacian(m_vertices[j]);
+      }
+      // Pour tous les sommets du maillage, aller dans la direction du laplacien
+      for(int j = 0 ; j < nb_vertices; j++){
+        *(m_vertices[j]->m_position) = *(m_vertices[j]->m_position)+lambda*lap_values[j];
+      }
+
+    }
 }
 
 void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb_iter)
