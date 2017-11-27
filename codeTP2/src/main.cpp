@@ -112,14 +112,15 @@ int main()
     // Mesh creation
 
 //    Mesh m("../models/armadillo.off");
-//    Mesh m("../models/buddha.off");
+  //  Mesh m("../models/buddha.off");
 //    Mesh m("../models/bunny.off");
     //  Mesh m("../models/ceasar.off");
+    // Mesh m("../models/happy.off");
 //     Mesh m("../models/cube_closed.off");
 //    Mesh m("../models/cylindre.off");
-  //  Mesh m("../models/dragon.off");
+   Mesh m("../models/dragon.off");
 //    Mesh m("../models/half_cylindre.off");
-//    Mesh m("../models/max.off");
+  //  Mesh m("../models/max.off");
 //    Mesh m("../models/pipes_round.off");
 //    Mesh m("../models/pipes_squared.off");
 //    Mesh m("../models/sphere.off");
@@ -127,7 +128,7 @@ int main()
 //    Mesh m("../models/test.off");
 // Mesh m("../models/tetrahedron.off");
 //    Mesh m("../models/tetrahedron_2.off");
-   Mesh m("../models/thing_rounded.off");
+  //  Mesh m("../models/thing_rounded.off");
 //    Mesh m("../models/thing_squared.off");
   //  Mesh m("../models/triceratops.off");
 
@@ -209,7 +210,7 @@ int main()
         if (glfwGetKey( GLFW_KEY_SPACE ) == GLFW_PRESS)
         {
             //o.m_mesh->LaplacianSmooth(0.5,1);
-            o.m_mesh->TaubinSmooth(0.5,-0.45,10);
+            o.m_mesh->TaubinSmooth(0.5,-0.53,1);
             o.m_mesh->Normalize();
             o.m_mesh->ComputeNormals();
             o.UpdateGeometryBuffers();

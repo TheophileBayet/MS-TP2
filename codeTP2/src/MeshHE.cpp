@@ -361,7 +361,7 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
     cout << " On tombe sur un bord " <<endl;
 		liste_voisin = GetVertexNeighborsAtBorder(v);
   }
-    cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
+    // cout << " GetVertexNeighbors found " << liste_voisin.size() << " vertexs " << endl;
     cout << endl;
     return liste_voisin;
 }
@@ -369,11 +369,11 @@ vector<Vertex*> MeshHE::GetVertexNeighbors(const Vertex* v) const
 
 glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 {
-    cout << "Entree Laplacien" << endl;
+    // cout << "Entree Laplacien" << endl;
 	vector<Vertex*> neighbors = GetVertexNeighbors(v);
 	vec3 laplace = vec3(0);
 	//for(Vertex* n : neighbors)
-  cout << "MILIEU LAPLACIEN " << endl;
+  // cout << "MILIEU LAPLACIEN " << endl;
   if(!IsAtBorder(v)){ // Si le sommet est au bord, pas de déplacement
 	   for (std::vector<Vertex*>::iterator it = neighbors.begin() ; it != neighbors.end(); ++it){
 		  Vertex* n = *it;
@@ -381,9 +381,11 @@ glm::vec3 MeshHE::Laplacian(const Vertex* v) const
 	 }
 	 laplace /= neighbors.size();
   }
-   cout << "MeshHE::Laplacian ended" << endl;
-
-    // cout << "Thomas::Test : laplace = " << to_string(laplace) << " point : " << to_string(*(v->m_position)) << endl;
+  //  cout << "MeshHE::Laplacian ended" << endl;
+    // if(dot(laplace,laplace)>0.0001){
+    //    cout << "Thomas::Test : laplace = " << to_string(dot(laplace,laplace)) << " point : " << to_string(*(v->m_position)) << endl;
+    //    laplace = laplace / 10.0f;
+    //  }
     return laplace;
 }
 
@@ -396,6 +398,8 @@ void MeshHE::LaplacianSmooth(const float lambda, const glm::uint nb_iter)
       // pour tous les sommmets du maillage, calculer le laplacien
       for(int j = 0 ; j < nb_vertices; j++){
         lap_values[j] = Laplacian(m_vertices[j]);
+        // lap_values[j] *= lap_values[j];
+        // lap_values[j] *= 10;
       }
       // Pour tous les sommets du maillage, aller dans la direction du laplacien
       for(int j = 0 ; j < nb_vertices; j++){
@@ -419,14 +423,13 @@ void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb
 
 
 //***************
-// Border detection 
+// Border detection
 
 
 
 
 bool MeshHE::IsAtBorder(const HalfEdge* he) const
 {
-    // cout << "MeshHE::IsAtBorder(const HalfEdge* he) is not coded yet!" << endl;
     return (he->m_twin==NULL);
 }
 
@@ -434,15 +437,27 @@ bool MeshHE::IsAtBorder(const Vertex* v) const
 {
     // cout << "MeshHE::IsAtBorder(const Vertex* v) is not coded yet!" << endl;
     HalfEdge* he0 = v->m_half_edge;
-    if(IsAtBorder(he0))return true;
+    if(IsAtBorder(he0)){
+       cout << " point au bord trouve "<< endl;
+        return true;
+      }
     HalfEdge* he1 = he0-> m_twin;
     he0 = he1->m_next;
-    if(IsAtBorder(he0))return true;
+    if(IsAtBorder(he0)){
+      cout << " point au bord trouve "<< endl;
+       return true;
+     }
     while(!(EstEgal(*(he0->m_twin),*he1))){
-      if(IsAtBorder(he0))return true;
+      if(IsAtBorder(he0)){
+        cout << " point au bord trouve "<< endl;
+         return true;
+       }
       he0 = he0->m_twin;
       he0 = he0->m_next;
-      if(IsAtBorder(he0))return true;
+      if(IsAtBorder(he0)){
+         cout << " point au bord trouve "<< endl;
+          return true;
+         }
     }
     return false;
 }
@@ -549,7 +564,7 @@ void MeshHE::ComputeNormals()
         if(!IsAtBorder(m_vertices[i]))
 		{
         *m_vertices[i]->m_normal = vec3(0.0);
-        cout << "BOUCLE COMPUTENORMALS" << endl;
+        // cout << "BOUCLE COMPUTENORMALS" << endl;
         vector<Vertex*> neib = GetVertexNeighbors(m_vertices[i]);
 
 
