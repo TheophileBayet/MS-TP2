@@ -322,24 +322,30 @@ vector<Vertex*> MeshHE::GetVertexNeighborsAtBorder(const Vertex* v) const
 	HalfEdge* he0 = v->m_half_edge;
 	//while the border edge is not reached loop clockwize
 	if(!IsAtBorder(he0)){
-		liste_voisin.push_back(he0->m_twin->m_vertex);
-		he0 = he0->m_twin->m_next;
+		he0 = he0->m_twin;
+		liste_voisin.push_back(he0->m_vertex);
+		//liste_voisin.insert(liste_voisin.begin(),he0->m_vertex);
+		he0 = he0->m_next;
 		while((!IsAtBorder(he0))){
 			he0 = he0->m_twin;
 			liste_voisin.push_back(he0->m_vertex);
+			//liste_voisin.insert(liste_voisin.begin(),he0->m_vertex);
 			he0 = he0->m_next;
 		}
 	}
 	//while the border edge is not reached loop counter-clockwize
 	he0 = v->m_half_edge->m_next;
-	liste_voisin.push_back(he0->m_vertex);
+	//liste_voisin.push_back(he0->m_vertex);
+	liste_voisin.insert(liste_voisin.begin(),he0->m_vertex);
 	he0 = he0->m_next;
-	liste_voisin.push_back(he0->m_vertex);
+	//liste_voisin.push_back(he0->m_vertex);
+	liste_voisin.insert(liste_voisin.begin(),he0->m_vertex);
 	while(!IsAtBorder(he0)){
 		he0 = he0->m_twin;
 		he0 = he0->m_next;
 		he0 = he0->m_next;
-		liste_voisin.push_back(he0->m_vertex);
+		//liste_voisin.push_back(he0->m_vertex);
+		liste_voisin.insert(liste_voisin.begin(),he0->m_vertex);
 	}
     return liste_voisin;
 }
@@ -540,6 +546,8 @@ void MeshHE::ComputeNormals()
 {
     for(unsigned int i=0; i<m_vertices.size(); i++)
     {
+        if(!IsAtBorder(m_vertices[i]))
+		{
         *m_vertices[i]->m_normal = vec3(0.0);
         cout << "BOUCLE COMPUTENORMALS" << endl;
         vector<Vertex*> neib = GetVertexNeighbors(m_vertices[i]);
@@ -565,6 +573,7 @@ void MeshHE::ComputeNormals()
         }
 
         *m_vertices[i]->m_normal = -glm::normalize(*m_vertices[i]->m_normal);
+		}
     }
     cout << " FIN BOUCLE COMPUTENORMALS" << endl;
 }

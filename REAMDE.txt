@@ -1,4 +1,6 @@
 TODO : 
 
-Theophile : Lapalcian smooth tests 
-Thomas : Lapalcian tests 
+caractériser les points non lissé
+comprendre l'erreur sur les normales au bords
++ Rapport
+
