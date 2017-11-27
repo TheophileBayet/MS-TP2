@@ -5,6 +5,8 @@
 #include <map>
 #include <algorithm>
 #include "glm/ext.hpp"
+#include <stdlib.h>
+#include <time.h> 
 
 using namespace glm;
 using namespace std;
@@ -104,6 +106,8 @@ MeshHE::MeshHE(const Mesh &m)
             }
         }
     }
+	/* initialize random seed: */
+	srand (time(NULL));
 }
 
 
@@ -421,12 +425,23 @@ void MeshHE::TaubinSmooth(const float lambda, const float mu, const glm::uint nb
 	}
 }
 
+//***************
+// Noising
+
+void MeshHE::Noise()
+{
+    int nb_vertices = m_vertices.size();
+	for(int i = 0; i < nb_vertices; i++)
+	{
+		float x = float(rand()%100)/1000.0;
+		float y = float(rand()%100)/1000.0;
+		float z = float(rand()%100)/1000.0;
+		*(m_vertices[i]->m_position) = *(m_vertices[i]->m_position)+ glm::vec3(x,y,z);
+	}	
+}
 
 //***************
 // Border detection
-
-
-
 
 bool MeshHE::IsAtBorder(const HalfEdge* he) const
 {

@@ -120,6 +120,8 @@ class MeshHE
     void LaplacianSmooth(const float lambda = 1.0, const glm::uint nb_iter = 1);                         /// Performs nb_iter steps of laplacian smoothing with factor lambda
     void TaubinSmooth(const float lambda = 0.330, const float mu = -0.331, const glm::uint nb_iter = 1); /// Performs nb_iter steps of taubin smoothing with factors lambda and mu
 
+    // Noising [TODO]
+    void Noise();
 
     // Border detection [TODO]
     bool IsAtBorder(const Vertex* v) const;     /// Tells wether vertex v is at border or not

@@ -206,16 +206,36 @@ int main()
 
         view_control(view_matrix, speed * delta_time);
 
-        // Smoothing control: press the space bar to see the effect of your smoothing in real time !
+		// Smoothing control: press the space bar to see the effect of your smoothing in real time !
         if (glfwGetKey( GLFW_KEY_SPACE ) == GLFW_PRESS)
         {
-            //o.m_mesh->LaplacianSmooth(0.5,1);
             o.m_mesh->TaubinSmooth(0.5,-0.53,1);
             o.m_mesh->Normalize();
             o.m_mesh->ComputeNormals();
             o.UpdateGeometryBuffers();
 
         }
+
+        // Smoothing control: press the space bar to see the effect of your smoothing in real time !
+        if (glfwGetKey( GLFW_KEY_L ) == GLFW_PRESS)
+        {
+            o.m_mesh->LaplacianSmooth(0.5,1);
+            o.m_mesh->Normalize();
+            o.m_mesh->ComputeNormals();
+            o.UpdateGeometryBuffers();
+
+        }
+
+        // Noising control: press the N key to add noise !
+        if (glfwGetKey( GLFW_KEY_N ) == GLFW_PRESS)
+        {
+            o.m_mesh->Noise();
+            o.m_mesh->Normalize();
+            o.m_mesh->ComputeNormals();
+            o.UpdateGeometryBuffers();
+
+        }
+
 
 
 
