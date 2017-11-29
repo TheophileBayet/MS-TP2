@@ -440,6 +440,20 @@ void MeshHE::Noise()
 	}
 }
 
+void MeshHE::NoiseNotBorder()
+{
+    int nb_vertices = m_vertices.size();
+	for(int i = 0; i < nb_vertices; i++)
+	{
+		if(!IsAtBorder(m_vertices[i])){
+			float x = float(rand()%100)/10000.0;
+			float y = float(rand()%100)/10000.0;
+			float z = float(rand()%100)/10000.0;
+			*(m_vertices[i]->m_position) = *(m_vertices[i]->m_position)+ glm::vec3(x,y,z);
+		}
+	}
+}
+
 //***************
 // Border detection
 

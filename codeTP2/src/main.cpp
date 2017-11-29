@@ -229,7 +229,8 @@ int main()
         // Noising control: press the N key to add noise !
         if (glfwGetKey( GLFW_KEY_N ) == GLFW_PRESS)
         {
-            o.m_mesh->Noise();
+            //o.m_mesh->Noise();
+            o.m_mesh->NoiseNotBorder();
             o.m_mesh->Normalize();
             o.m_mesh->ComputeNormals();
             o.UpdateGeometryBuffers();

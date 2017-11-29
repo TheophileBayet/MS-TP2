@@ -122,6 +122,7 @@ class MeshHE
 
     // Noising [TODO]
     void Noise();
+    void NoiseNotBorder();
 
     // Border detection [TODO]
     bool IsAtBorder(const Vertex* v) const;     /// Tells wether vertex v is at border or not
