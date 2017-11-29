@@ -5,5 +5,9 @@ TODO :
 -Chercher points artefacts & tentative pour corriger
 -Corriger normales
 -Créer bruit & tester
-
  
+=======
+caractériser les points non lissé
+comprendre l'erreur sur les normales au bords
++ Rapport
+
