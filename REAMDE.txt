@@ -1,4 +1,9 @@
 TODO : 
 
-Theophile : Lapalcian smooth tests 
-Thomas : Lapalcian tests 
+-Rapport
+-Comparaisons avec Meshlab
+-Chercher points artefacts & tentative pour corriger
+-Corriger normales
+-Créer bruit & tester
+
+ 
